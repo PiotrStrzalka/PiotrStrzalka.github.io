@@ -1,6 +1,7 @@
 ---
 layout: default
-title:  "VESC"
+author: "Piotr Strzałka"
+tags: vesc electronic 
 ---
 
 # VESC - cost sensitive solution

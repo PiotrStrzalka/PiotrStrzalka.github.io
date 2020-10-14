@@ -10,3 +10,6 @@ gems:
 - jemoji
 
 exclude: docker
+
+title: Create
+email: pio.strzalka@gmail.com

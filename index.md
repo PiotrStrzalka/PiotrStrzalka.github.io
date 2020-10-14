@@ -1,4 +1,7 @@
-## Welcome to My blog!
+---
+active: true
+---
+# Welcome to My blog!
 <ul>
   {% for post in site.posts %}
     <li>
