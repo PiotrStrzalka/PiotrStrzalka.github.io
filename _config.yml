@@ -11,5 +11,8 @@ gems:
 
 exclude: docker
 
-title: Create
+title: Go create!
 email: pio.strzalka@gmail.com
+
+tag_page: '/blog/tags/'
+
