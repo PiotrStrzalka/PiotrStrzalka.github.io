@@ -9,7 +9,8 @@ active: true
       <h2><a href="{{ post.url }}">{{ p_start[0] | strip_html}}</a></h2> {{post.date | date_to_string}} 
       {% if post.tags %} | 
       {% for tag in post.tags %}
-          <a href="{{ site.baseurl }}{{ site.tag_page }}#{{ tag | slugify }}" class="post-tag">#{{ tag }}</a>
+          <a href="{{ site.baseurl }}{{ site.tag_page }}" class="post-tag">#{{ tag }}</a>
+          <!-- #{{ tag | slugify }} -->
       {% endfor %}
       {% endif %}
       <hr/>

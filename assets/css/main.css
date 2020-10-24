@@ -5,3 +5,11 @@
     font-weight: 1000;
     font-size: larger;
   }
+
+  .nav-link-big {
+    color:white;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-weight: 1000;
+    font-size: xx-large;
+  }
