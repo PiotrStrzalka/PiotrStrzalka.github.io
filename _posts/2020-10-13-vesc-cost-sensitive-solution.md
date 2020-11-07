@@ -25,7 +25,7 @@ Currently the best option to order them is to use JLCPCB manufacturer, (**[HERE]
 
 - **TOTAL:** Boards 11$ + Shipping 5$: 16$
 
-<img src="/assets/images/VESC-boards.jpg" alt="drawing" width="300" class="center"/>
+<img src="/assets/images/VESC-boards.jpg"  width="600" class="center"/>
 
 ### COMPONENTS
 Bill of materials for VESC can be found on **[Benjamin Vedder github](https://github.com/vedderb/bldc-hardware/blob/master/design/BLDC4.12_BOM.ods)**. Here is my version of it which includes parts for 2 VESC boards, 2 capacitor boards and 2 antispark switch. It also contains spare parts which most probably will be burned while playing with custom applications. (I am currently experimenting with replacing mosfets  with cheaper alternatives).
@@ -48,7 +48,7 @@ For many this seems the toughest part, but it is not necessarily true. To assemb
 I have prepared top and bottom component placement prints for your convenience, you can print it and should easily assemble the whole board with it. Of course you can also install **[Kicad](https://kicad-pcb.org/)** software and look at original schematic and  pcb design (also for AntiSparkSwitch).
 
 <!-- ![My helpful screenshot](/assets/images/vesc-top-bottom.jpg) -->
-<img src="/assets/images/vesc-top-bottom.jpg" alt="drawing" width="400" class="center"/>
+<img src="/assets/images/vesc-top-bottom.jpg" alt="drawing" width="600" class="center"/>
 
 If you do not have hot air to solder thermal pad of mosfet driver (DRV8302 - U3) you can smear it with thermal paste and solder only legs on sides, it should work sufficiently for most use cases.
 

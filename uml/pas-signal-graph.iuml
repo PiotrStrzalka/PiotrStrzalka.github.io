@@ -1,0 +1,69 @@
+@startuml
+robust "PAS sensor signal" as PAS
+concise "Pedal movement" as RM
+
+@0
+PAS is Low
+RM is Idle
+
+@2
+PAS is High 
+RM is Forward
+@3
+PAS is Low
+@3.5
+PAS is High
+@4.5
+PAS is Low
+@5
+PAS is High
+@6
+PAS is Low
+@6.5
+PAS is High
+@7.5
+PAS is Low
+@8
+PAS is High
+@9
+PAS is Low
+@9.5
+PAS is High
+@10
+PAS is Low
+@11
+PAS is High
+@11.5
+PAS is Low
+@12.5
+PAS is High
+@13
+PAS is Low
+@14
+PAS is High
+@14.5
+PAS is Low
+@15.5
+PAS is High
+@16
+PAS is Low
+@17
+PAS is High
+@17.5
+PAS is Low
+@18.5
+PAS is High
+@19
+PAS is Low
+@20
+PAS is High
+
+@10
+RM is Backward
+
+@20
+RM is Idle
+
+highlight 2 to 10 #Gold;line:DimGrey : PAS signal is longer in High state
+highlight 10 to 20 #lightBlue;line:DimGrey : PAS signal is longer in Low state
+@enduml

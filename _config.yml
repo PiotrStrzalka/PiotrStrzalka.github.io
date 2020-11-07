@@ -9,10 +9,15 @@ gems:
 - jekyll-sitemap
 - jemoji
 
-exclude: docker
+exclude: 
+- docker
+- uml
 
 title: Strzaleczka's stuff
 email: pio.strzalka@gmail.com
 
 tag_page: '/blog/tags/'
+
+# Google Analytics
+google_analytics: G-M0X69XTSWF
 
