@@ -151,4 +151,130 @@ static THD_FUNCTION(pas_sensor_thread, arg)
 
 So I decided to add one hall sensor to circuit and make this detection to work like encoder.
 
-# Encoder soultion.
+# Encoder solution.
+
+Suprisingly there are no widely available Pedal Assist Sensors with two hall sensors embedded able to detect precisely movement in both directions. So I decided to simulate it by adding hall sensor from another PAS. Result looks like below, diagram and photo of my test harness.
+
+picture
+
+
+Rotation in both directions are show on next picture, it is photo taken on oscilloscope which shows rotation signal and rotation change signal. Overall it looks like typical encoder signal, maybe slopes distances are less regular due to inprecise position of sensors and I think detection in both directions is not fully symmetrical. To get more info about encoders you can check e.g. **[Encoder](https://howtomechatronics.com/tutorials/arduino/rotary-encoder-works-use-arduino/)** 
+
+
+### Encoder support in STM32F4
+Fortunately support for encoder is embedded in STM32F4 timers and even more support is given by VESC system itself, so setting up this whole thing takes only a minute.
+
+I connected "encoder" outputs to pins to STM32 Pins B6 and B7, external pullup is already on board so there is no need for setting up internal pullups.
+My implementation can be found in file **[app_pas_encoder.c](https://github.com/strzaleczka/bldc/blob/friction_drive/applications/app_pas_encoder.c)**
+
+Initialization takes only a couple of lines:
+``` c
+#define ENCODER_RELOAD_VALUE        1000
+
+void app_pas_encoder_init(void)
+{
+...
+    encoder_init_abi(ENCODER_RELOAD_VALUE);
+...
+}
+```
+
+After that value interesting for us can be read from timer CNT register
+``` c
+uint32_t encoder_position = HW_ENC_TIM->CNT;
+```
+
+That value contains direction detecion, but it doesn't detect counter overload which can disrupt our calculations, it needs to be taken into account when countning position delta. Function **calculate_encoder_delta** takes care about it.
+``` c
+static int calculate_encoder_delta(uint32_t previous_value, uint32_t actual_value)
+{
+    int delta = actual_value - previous_value;
+
+    if(delta < -(ENCODER_RELOAD_VALUE/2))
+    {
+        delta = delta + (int)ENCODER_RELOAD_VALUE;
+    }
+    else if (delta > ENCODER_RELOAD_VALUE/2)
+    {
+        delta = delta - ENCODER_RELOAD_VALUE;
+    }
+    return delta;
+}
+```
+
+Main cyclist pedal movement is determined in function **calculate_action_from_position**. That function is called every 10ms from task and containes state machine to preserve previous state. It also makes some simple averaging and sends signal to listeners (by use of events) about full turn back detection (further it will be used for arming and disarming the controller). I think there is no point to write more about it, small diagram and code in c should explain everything clearly.
+
+``` c
+static void calculate_action_from_position(uint32_t encoder_position){
+    static uint32_t previous_encoder_position = 0U;    
+    static mov_type_enum previous_state = MOV_TYPE_NO_MOVE_OR_TOO_SLOW;
+    static uint32_t backward_turn_detection_start_position = 0U;
+    static bool turn_back_detected = false;
+    
+    position_delta = (float) calculate_encoder_delta(previous_encoder_position, encoder_position);
+    angle_delta = ((float)position_delta/(float)FULL_CIRCLE_ENCODER_STEPS)*360.0f;
+    speed = (angle_delta * 1000.0f)/ (float)THREAD_SLEEP_TIME;
+
+    speed_running_avg = (speed_running_avg * (float)(SPEED_AVG_CONSTANT-1) + speed)/(float)SPEED_AVG_CONSTANT;
+
+    switch(state)
+    {
+        case MOV_TYPE_NO_MOVE_OR_TOO_SLOW:
+            if(speed_running_avg > MOV_FORWARD_SPEED_THR){
+                state = MOV_TYPE_MOV_FORWARD;
+            }
+            else if(speed_running_avg < MOV_BACKWARD_SPEED_THR){
+                state = MOV_TYPE_MOV_BACKWARD;
+            }
+            else{
+                /*do nothing */
+            }
+            break;
+        case MOV_TYPE_MOV_FORWARD:
+            if(speed_running_avg < (MOV_FORWARD_SPEED_THR - MOV_SPEED_HYSTERESIS))
+            {
+                state = MOV_TYPE_NO_MOVE_OR_TOO_SLOW;
+            }
+            break;
+        case MOV_TYPE_MOV_BACKWARD:
+            if(speed_running_avg > (MOV_BACKWARD_SPEED_THR + MOV_SPEED_HYSTERESIS))
+            {
+                state = MOV_TYPE_NO_MOVE_OR_TOO_SLOW;
+            }
+            break;
+        default:
+            commands_printf("Something goes wrong");
+            break;
+    }
+
+    if(state != previous_state)
+    {
+        commands_printf("State transition %s -> %s", 
+            mov_state_type_to_string(previous_state), mov_state_type_to_string(state));
+    }
+    
+    if(state == MOV_TYPE_MOV_BACKWARD)
+    {
+        if(previous_state != MOV_TYPE_MOV_BACKWARD)
+        {
+            backward_turn_detection_start_position = encoder_position;
+        }
+
+        if(turn_back_detected == false){
+            if(calculate_encoder_delta(backward_turn_detection_start_position, encoder_position) < BACKWARD_MOVEMENT_TURN_THR)
+            {
+                send_event_about_turn_back();
+                commands_printf("Turn back detected");
+                turn_back_detected = true;
+            }
+        }       
+    }
+    else
+    {
+        turn_back_detected = false;
+    }
+
+    previous_encoder_position = encoder_position;
+    previous_state = state;
+}
+```
