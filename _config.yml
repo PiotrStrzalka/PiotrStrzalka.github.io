@@ -8,6 +8,7 @@ gems:
 - jekyll-redirect-from
 - jekyll-sitemap
 - jemoji
+- jekyll-toc
 
 exclude: 
 - docker
@@ -21,3 +22,7 @@ tag_page: '/blog/tags'
 # Google Analytics
 google_analytics: G-M0X69XTSWF
 
+markdown: kramdown
+
+kramdown:
+   toc_levels: 1..3

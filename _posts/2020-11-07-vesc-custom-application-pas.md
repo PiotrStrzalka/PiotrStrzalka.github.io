@@ -4,27 +4,32 @@ author: "Piotr Strzałka"
 tags: [vesc, friction-drive, electronic]
 ---
 # VESC - Creating a custom application for PAS sensor
+{:.no_toc}
 
--- POST UNDER DEVELOPMENT --  
-VESC is a really powerfull platform in terms of software comparing to other solutions that you can find on the market. Configuration that you can do through dedicated PC and smartphone app is quite extensive, but for me the real power lies is capability of writing own application on that platform. I used that power to write custom Pedal Assist Sensor component used in my electric bike drive train project.
+-- POST UNDER DEVELOPMENT --  (INITIAL IDEA OF TRACKING HIGH and LOW LEVEL ratio seems to not work to flawlessly. Another approach which involes encored like solution is required.)
+VESC is a really powerfull platform in terms of software comparing to other solutions that you can find on the market. Configuration that you can do through dedicated PC and smartphone apps is quite extensive, but for me the real power lies is capability of writing own application on that platform. I used that power to write custom Pedal Assist Sensor component used in my electric bike drive train project.
 
-And belive me, as for now there is no better alternative. Once I had decided to make a research for other platform, I have tried to use ST branded Motor Control Workbench with dedicated development boards and after several afternoons I gave up. It was just so annoying to deal with some not fully testes closed source code generator when things happend just randomly.
+And trust me, as for now there is no better alternative. Once I had decided to make research for a different platform, I have tried to use ST branded Motor Control Workbench with dedicated development boards and after several afternoons I gave up. It was just so annoying to deal with some not fully tested closed source code generator when things happen just randomly.
 
-## 1. Pedal Assist Sensor - what is all about
+## Table of Contents
+{:.no_toc}
+* This will become a table of contents (this text will be scrapped).
+{:toc}
+# Pedal Assist Sensor - what is all about
 
-Pedal Assist Sensor (PAS) - is a device that can be mount on the crank of bicycle which gives you an information about current movement of pedals. (**[HERE](https://ebikes.ca/learn/pedal-assist.html)** you can find broader description of sensors.
+Pedal Assist Sensor (PAS) - is a device that can be mount on the crank of a bicycle which gives you information about the current movement of pedals. (**[HERE](https://ebikes.ca/learn/pedal-assist.html)** you can find a broader description of sensors.
 )
 
-I got bunch of Varied width sensors which requires one wire to connect to uC. The signal that can be readed looks like below:
+I got a bunch of Varied width sensors which requires one wire to connect to uC. The signal that can be read looks like below:
 
 ![PAS graph](/assets/uml/pas-signal-graph.png)
 
 
-## 2. Ok - but where to put my application "main function"?
+# Ok - but where to put my application "main function"?
 
 This question has been answered in Benjamin Vedder post **[Writing custom application](http://vedder.se/2015/08/vesc-writing-custom-applications/)** . There is a comprehensive description where to put your logic into the code.
 
-## 3. Integration with RTOS and other system functions
+# Integration with RTOS and other system functions
 
 **[ChibiOS](https://www.chibios.org/dokuwiki/doku.php?id=chibios:documentation:start)** is really neat Real Time Operating System and working with it is a pleasure thanks to good documentation and wide support community.  
 
@@ -75,6 +80,11 @@ CH_IRQ_HANDLER(HW_PAS_SENSOR_EXTI_ISR_VEC){
 Configuration of mailbox system seems tricky at first glance, but after all it is one buffer with two pointer tables, one which shows free spots, and second occupied ones.
 
 ``` c
+typedef struct {
+    uint32_t timestamp;
+    uint8_t pin_state;
+} pas_edge;
+
 static pas_edge buffers[NUM_BUFFERS]; 
 static msg_t pas_events_queue[NUM_BUFFERS];
 static mailbox_t pas_events;
@@ -91,11 +101,9 @@ void app_pas_sensor_init(void)
     }
     ...
 }
-```
+...
 
-- #### 
-
-``` c
+// interrupt handling
 CH_IRQ_HANDLER(HW_PAS_SENSOR_EXTI_ISR_VEC){
     if(EXTI_GetITStatus(HW_PAS_SENSOR_EXTI_LINE) != RESET){
         void *pbuf;
@@ -114,8 +122,7 @@ CH_IRQ_HANDLER(HW_PAS_SENSOR_EXTI_ISR_VEC){
 
 
 
-3 Calculation of High/Low state will need some context to do it in (we cannot do it in interrupt, holding interrupt procedure can disturb other more important interrupts and calculations), so another task is required.
-4 
+- #### Calculation of High/Low state will need some context to do it in (we cannot do it in interrupt, holding interrupt procedure can disturb other more important interrupts and calculations), so another task is required.
 
 
 
@@ -140,11 +147,8 @@ static THD_FUNCTION(pas_sensor_thread, arg)
 }
 ```
 
+- #### After that I made calculations of signal frequency, Td/Tu ratio, I also made a basic signal interpretation. After that I draw a plot in VESC application but the results were bad, I couldn't distinguish between movement forward and backward when movement was too slow or changed frequently, and the resolution was too bad to detect movement fast enough for my needs.
 
+So I decided to add one hall sensor to circuit and make this detection to work like encoder.
 
-
-
-
-## 4. Application example - Pedal Assist Sensor detector
-
-## 5. Write your own
+# Encoder soultion.

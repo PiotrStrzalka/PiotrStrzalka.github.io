@@ -6,16 +6,36 @@
     font-size: larger;
   }
 
-  .nav-link-big {
-    color:white;
-    margin-left: 10px;
-    margin-right: 10px;
-    font-weight: 1000;
-    font-size: xx-large;
-  }
+.nav-link-big {
+  color:white;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-weight: 1000;
+  font-size: xx-large;
+}
 
-  .center {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+W
+/* 
+// Adding 'Contents' headline to the TOC
+#markdown-toc::before {
+    content: "Contents";
+    font-weight: bold;
+}
+
+
+// Using numbers instead of bullets for listing
+#markdown-toc ul {
+    list-style: decimal;
+}
+
+#markdown-toc {
+    border: 1px solid #aaa;
+    padding: 1.5em;
+    list-style: decimal;
+    display: inline-block;
+} */
