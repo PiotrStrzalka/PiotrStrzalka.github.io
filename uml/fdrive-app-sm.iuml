@@ -1,0 +1,24 @@
+@startuml
+[*] --> Drive_NotArmed
+Drive_NotArmed: Entry / Release Motor
+Drive_NotArmed -> Drive_Armed : PAS Signal TurnBack
+Drive_Armed -left-> Drive_NotArmed : PAS Signal TurnBack
+  
+state Drive_Armed {
+    [*] --> Armed_Idle
+    Armed_Idle --> Armed_Attaching : PAS Moving Forward
+    state Armed_Attaching {
+        [*] --> Jump
+        Jump --> CoolDown : motorAttached == FALSE
+        CoolDown --> Jump : TimeElapsed
+        Jump : Entry / Set Motor Speed = SPEED_GOAL
+        CoolDown :  Entry / Release Motor, Set Timer = 500ms
+    }
+    
+    Jump -> Armed_Running : motorAttached == TRUE
+    Armed_Running --> Armed_Attaching : motorAttached == FALSE
+    
+    Armed_Attaching --> Armed_Idle: !PAS Moving Forward
+}
+
+@enduml
