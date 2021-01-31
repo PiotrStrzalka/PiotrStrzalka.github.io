@@ -1,9 +1,9 @@
 ---
 layout: post
 author: "Piotr Strzałka"
-tags: [vesc, friction-drive, electronic]
+tags: [vesc, PROJECT f-drive, electronic]
 ---
-# VESC - Creating a custom application for PAS sensor
+# VESC - Pedal Assist Sensor Support (PAS)
 {:.no_toc}
 
 -- POST UNDER DEVELOPMENT --  (INITIAL IDEA OF TRACKING HIGH and LOW LEVEL ratio seems to not work to flawlessly. Another approach which involes encored like solution is required.)
@@ -22,7 +22,8 @@ Pedal Assist Sensor (PAS) - is a device that can be mount on the crank of a bicy
 
 I got a bunch of Varied width sensors which requires one wire to connect to uC. The signal that can be read looks like below:
 
-![PAS graph](/assets/uml/pas-signal-graph.png)
+<!-- ![PAS graph](/assets/uml/pas-signal-graph.png) -->
+<img src="/assets/uml/pas-signal-graph.png" alt="pas-signal-graph"  class="center"/>
 
 
 # Ok - but where to put my application "main function"?

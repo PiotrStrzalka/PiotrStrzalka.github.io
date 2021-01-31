@@ -9,6 +9,7 @@ gems:
 - jekyll-sitemap
 - jemoji
 - jekyll-toc
+- jekyll-relative-links
 
 exclude: 
 - docker

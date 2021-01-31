@@ -1,0 +1,42 @@
+@startuml
+    package "removable" as battery_r {
+        [battery]
+    }
+
+    package embedded {
+        package crank {
+            [pas]
+        }
+        
+        package handlebar {
+            [on_off_switch]
+            [potentiometer]
+        }
+        package battery_mount {
+            [soft_start]
+            [connection_board]
+            interface plug_in_connector_female
+        }
+        potentiometer --> connection_board : 3 wires
+        pas --> connection_board : 4 wires
+        on_off_switch --> connection_board : 3 wires
+        connection_board --> plug_in_connector_female :  5 wires
+    }
+    
+    package removable {
+        interface plug_in_connector_male
+        [vesc]
+        [motor]
+        [nrf]
+        [capacitor_board]
+        plug_in_connector_male -> capacitor_board : power             
+        plug_in_connector_male -> vesc : signal
+        capacitor_board --> vesc : power
+        vesc --> motor
+        vesc --> nrf
+    } 
+    
+    battery --> soft_start : 2 wires
+    soft_start --> plug_in_connector_female : 2 wires
+    plug_in_connector_female --> plug_in_connector_male : 7 wires
+@enduml

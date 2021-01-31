@@ -1,0 +1,72 @@
+@startuml
+  ' top to bottom direction
+'   left to right direction
+  ' X-right[hidden]-Y  
+  package "Utils" as UTILS {
+    [hwconf]
+    [appconf]
+    [mcconf]
+    [halconf]
+    [mcuconf]
+    [board]
+    [buffer]
+    [chconf]
+    [digital_filter]
+    [flash_helper]
+    [packet]   
+    [utils]
+    [virtual_motor]
+    [worker]
+  }
+  package "Drivers" as DRIVERS {
+    [mc_pwm_foc]
+    [mc_pwm]
+    [can]
+    [eeprom]
+    [gpdrive]
+    [i2cbb]
+    [ledpwm]
+    [mempools]
+    [timer]
+    [servo_dec]
+    [servo_simple] 
+  }
+  package Services as SERVICES {
+    package "Services VESC" as SERVICES_VESC {
+      [mc_interface]
+      [commands]
+      [conf_general]
+      [timeout]
+      [terminal]
+      [blackmagic]
+      [imu]
+      [canard]
+      [nrf]
+      [encoder]
+      [led_external]
+      [shutdown]
+      [ws2811]
+    }
+    package "Services" as SERVICES_OS{
+      [ChibiosOS]
+      [compression]
+    }
+  }
+  package "Application" as APP {
+    [app]
+    [app_adc]
+    [app_balance]
+    [app_nunchuk]
+    [app_ppm]
+    [app_skypuff]
+    [app_sten]
+    [app_uartconn]
+    [app_fdrive] #GreenYellow
+  }
+
+  ' note left of APP : Test note
+
+  ' APP ----> SERVICES
+  ' SERVICES_VESC -right-> SERVICES_OS
+
+@enduml
