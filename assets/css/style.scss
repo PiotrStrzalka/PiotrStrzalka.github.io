@@ -1,16 +1,32 @@
 ---
 ---
 
+@font-face {
+    font-family: "Montserrat";
+    src: url("../fonts/montserrat/Montserrat-SemiBold.ttf");
+  }
+
+@font-face {
+    font-family: "Montserrat-Regular";
+    src: url("../fonts/montserrat/Montserrat-Regular.ttf");
+  }
+
 @import "{{ site.theme }}";
+
 
 .main-content {
     font-size: 0.9rem;
 }
-.main-content h1, .main-content h2, .main-content h3, .main-content h4, .main-content h5, .main-content h6 { font-weight: bold; color: #483701bf; }
-.main-content pre > code { font-size: 0.7rem; line-height: 1.05;}
-// .body{
-//     scale: 0.9;
-//     color: #000000;
-// }
+.main-content h1, .main-content h2, .main-content h3, .main-content h4, .main-content h5, .main-content h6 
+{ 
+    font-family: "Montserrat";
+    font-weight: bold;
+    color: #17252A;
+ }
 
-.page-header { color: #fff; text-align: center; background-color: #159957; background-image: linear-gradient(120deg, #999015, #996f15); }
+ html { font-family: "Montserrat"; /* 1 */ -ms-text-size-adjust: 100%; /* 2 */ -webkit-text-size-adjust: 100%; /* 2 */ }
+
+.main-content pre > code { font-size: 0.7rem; line-height: 1.05;}
+
+.page-header { color: #fff; text-align: center; background-color: #159957; background-image: linear-gradient(120deg, #2B7A78, #3AAFA9); }
+body { font-family: "Montserrat-Regular" }
