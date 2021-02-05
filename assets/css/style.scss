@@ -6,6 +6,11 @@
     src: url("../fonts/montserrat/Montserrat-SemiBold.ttf");
   }
 
+  @font-face {
+    font-family: "Montserrat-Bold";
+    src: url("../fonts/montserrat/Montserrat-Bold.ttf");
+  }
+
 @font-face {
     font-family: "Montserrat-Regular";
     src: url("../fonts/montserrat/Montserrat-Regular.ttf");
@@ -16,6 +21,10 @@
 
 .main-content {
     font-size: 0.9rem;
+}
+
+h1 {
+  font-family: "Montserrat";
 }
 .main-content h1, .main-content h2, .main-content h3, .main-content h4, .main-content h5, .main-content h6 
 { 
@@ -30,3 +39,9 @@
 
 .page-header { color: #fff; text-align: center; background-color: #159957; background-image: linear-gradient(120deg, #2B7A78, #3AAFA9); }
 body { font-family: "Montserrat-Regular" }
+
+a  {
+  color: #2B7A78;
+  background-color: transparent;
+  text-decoration: none;
+}
