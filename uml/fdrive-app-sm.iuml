@@ -1,33 +1,63 @@
 @startuml
-[*] --> Drive_NotArmed
-Drive_NotArmed: Entry / Release Motor
-Drive_NotArmed --> Drive_Armed : PAS Signal TurnBack / overall_errors = 0U, bip once
-Drive_Armed --> Drive_NotArmed : PAS Signal TurnBack / bip twice
-  
-state Drive_Armed {
-    [*] --> Armed_Idle
-    Armed_Idle --> Armed_Triggered : PAS Moving Forward
-    state Armed_Triggered {
-        [*] --> Jump
-        Jump --> CoolDown : motorAttached == FALSE
-        CoolDown --> Jump : TimeElapsed
-        Jump --> Armed_Running : motorAttached == TRUE
-        Armed_Running --> Jump : motorAttached == FALSE
 
-        Jump --> Attaching_Error : motorAttached == FALSE && attempts_left == 0U
-
-        Attaching_Error : Entry / overall_errors ++
-        Jump : Entry / Set Motor Speed = SPEED_GOAL
-        CoolDown :  Entry / Release Motor, Set Timer = 500ms
-
-    }
-
-    Armed_Triggered : Entry / attempts_left = 3
-    
-    
-    Armed_Triggered --> Armed_Idle: !PAS Moving Forward
+skinparam backgroundColor #FEFFFF
+skinparam state {
+  StartColor Black
+  EndColor Black
+  BackgroundColor #3AAFA9
+  BorderColor #2B7278
+  FontName Yu Gothic UI Semibold
+  StateBackgroundColor #DEF2F1
+  ArrowColor #17252A
+  ArrowThickness 2
+  ArrowFontName Yu Gothic UI Semibold
 }
 
-Attaching_Error --> Drive_NotArmed : overall_errors > 3U / Store error in memory, bip 3 times
+
+state app_fdrive {
+    
+    Drive_NotArmed: Entry:
+    Drive_NotArmed: Release Motor
+    
+    
+    state Drive_Armed {
+        state Triggered {
+            Jump --> CoolDown : TimeElapsed &&\nmotorAttached == FALSE
+            CoolDown --> Jump : TimeElapsed
+            Jump --> Running : TimeElapsed &&\nmotorAttached == TRUE
+            Running --> Jump : motorAttached == FALSE
+
+            Jump --> Attaching_Error : motorAttached == FALSE \n&& attempts_left == 0U
+
+            Attaching_Error : Entry:
+            Attaching_Error : overall_errors ++
+            Jump : Entry:
+            Jump : Set Motor Speed = SPEED_GOAL
+            Jump:        Set Timer = 500ms
+            CoolDown :  Entry:
+            CoolDown :  Release Motor
+            CoolDown :  Set Timer = 500ms
+
+        }
+        Armed_Idle : Exit:
+        Armed_Idle : attempts_left = 3
+        Armed_Idle --> Jump : PAS Moving Forward\n && !motorAttached
+
+        Armed_Idle --> Running : PAS Moving Forward \n&& motorAttached / \n Set Motor Speed = SPEED_GOAL
+        Triggered -up-> Armed_Idle: !PAS Moving Forward /\nRelease motor
+    }
+
+    Drive_NotArmed --> Armed_Idle : PAS Signal TurnBack / \n overall_errors = 0U,\n bip once
+    Drive_Armed -up-> Drive_NotArmed : PAS Signal TurnBack / bip twice
+    Attaching_Error -up-> Drive_NotArmed : overall_errors > 3U /\n Store error in memory,\n bip 3 times
+}
+
+[*] -down-> Drive_NotArmed
+app_adc --> app_fdrive[H]: ADC input < 80mV
+app_fdrive --> app_adc: ADC input > 120mV
+
+app_fdrive[H] --> Drive_NotArmed : Wasn't armed
+app_fdrive[H] -down-> Armed_Idle : Was armed
+
 
 @enduml

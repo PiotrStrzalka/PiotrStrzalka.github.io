@@ -1,4 +1,20 @@
 @startuml
+
+skinparam backgroundColor #FEFFFF
+
+skinparam InterfaceBackgroundColor #DEF2F1
+skinparam InterfaceBorderColor #3AAFA9
+
+skinparam component {
+  StartColor Black
+  EndColor Black
+  BackgroundColor #3AAFA9
+  FontName Yu Gothic UI Semibold
+  ArrowColor #17252A
+  ArrowThickness 2
+  ArrowFontName Yu Gothic UI Semibold
+}
+
     package "removable" as battery_r {
         [battery]
     }
