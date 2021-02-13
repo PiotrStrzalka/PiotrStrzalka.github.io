@@ -4,7 +4,7 @@ author: "Piotr Strzałka"
 tags: vesc electronic
 ---
 
-# VESC - cost sensitive solution
+# VESC - cost sensitive solution (~30$)
 
 
 Playing with electronic speed controllers can be really enjoyable and frustrating at the same time. I have always had a hard time using custom ESC’s when everything seems to work well and in the next second some tangled wire, or ESD charge kills an important chip or even one crucial I/O pin spoiling all the fun.

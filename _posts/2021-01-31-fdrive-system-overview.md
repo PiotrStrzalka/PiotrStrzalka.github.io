@@ -44,26 +44,58 @@ Comparing to traditional e-bike systems disadvantages of fdrive are obvious: les
 
 
 # System overview
+System has been splitted into three sections. On consists elements that have to be mounted on bike frame, and two (battery, motor with controller) that are easily removable.
+The goal was to enabled option when couple of bikes can have Embedded part mounted on and user can switch removable parts between them (I someone have i.e. road bicycle and cross bicycle and want to buy only one set).
 
-<img src="/assets/uml/fdrive-system-view.png" alt="pas-signal-graph" style="width: 500px" class="center"/>
+Details and connection scheme can be seen on diagram:
+
+{% include image.html url="/assets/uml/fdrive-system-view.png" description="System components connection diagram" class="center" %}
+
+<!-- <img src="/assets/uml/fdrive-system-view.png" alt="pas-signal-graph" style="width: 500px" class="center"/> -->
 ## Battery
 
+I have made battery by connecting 50 individual 18650 cells in 10S5P configuration. Each cell has capacity of 2750mAh. So the total capacity of battery will be:
+
+```
+Capacity = (3,7V * 2,75Ah) * 50 = 508,75 Wh 
+```
+Taking into account that I live in Europe where law allows to use max 250W and speed up to 25km/h that should give about 2h work on full throttle. Lets say that efficiency is about 80% so estimated range will be:
+
+
+```
+Range ~= ((508,75Wh / 250W) * 25km/h ) * 0,8 = 40,7km
+```
+But in practice range is much better due to fact that in Europe cyclist cannot use electric motor exclusively, it can only act as a support. 
+
+
+Battery got also BMS system to balance charger level of each section. Whole battery is packed to one of universal battery cases.
+
+<span class="picture-missing"> SOME PICTURE MISSING </span>
+
+
 ## Controller
-That part took huge amount of time:
+That part took huge amount of time, I got information on some forum that generic BLDC controller are ok, but I have never been happy with them. Some generates too much heat, some too much noise, others were lacking of documentation to configura them properly. Chinese S06P was close to be the right one but I haven't possibilty to modify firmware for special friction drive and my pas sensor needs.
+
+I also gave a try to ST motor controller evaluation boards but the SDK was to immature at that time. Then I saw on the shelf dusted VESC controller that I used for e-skateboard project long ago and it fits my needs perfectly.
+
+I have made small table to compare controller candidates.
 
 
 | Controller                        | Prons         | Cons  | Price |
 | -------------                     |:-------------:| :-----:| ------:|
-| **Generic BLDC<br>controller**    | easy access<br> low price<br> works with sensorless | $1600 |       |
-| **STM32ESC1**                     | centered      |   $12 |       |
-| **SC06**                          | are neat      |    $1 |       |
-| **VESC**                          | are neat      |    $1 |       |
+| **Generic BLDC<br>controller**    | easy access,<br> low price,<br> cheap, small | Too loud, Too much heat, closed source |   ~15$    |
+| **STM32ESC1**                     | Open sourced,<br> FOC possible,<br> small|  poorly maintained SDK an PC tools |   ~35$    |
+| **SC06**                          | rigid enclosure,<br> nice cooperation with outrunner      |    closed source,<br> lack of proper documentation,<br> big enclosure |   ~30$   |
+| **VESC**                          | Open sourced, big community,<br> good PC tools, great FOC performance      | ready to go with rigid enclosure can be expensive |  ADDRESS TO OTHER POST  ~25$   |
 
+<span class="picture-missing"> SOME PICTURE MISSING </span>
 ## Motor
 
 ## Mount
 
 ## Pedal Assist Sensor
+
+# Test fixture
 
 
 # Project future

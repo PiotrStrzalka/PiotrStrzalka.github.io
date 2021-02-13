@@ -3,7 +3,7 @@ layout: post
 author: "Piotr Strzałka"
 tags: [vesc, PROJECT f-drive, electronic]
 ---
-# VESC - Pedal Assist Sensor Support (PAS)
+# Custom Pedal Assist Sensor (PAS) + VESC support 
 {:.no_toc}
 
 -- POST UNDER DEVELOPMENT --  (INITIAL IDEA OF TRACKING HIGH and LOW LEVEL ratio seems to not work to flawlessly. Another approach which involes encored like solution is required.)

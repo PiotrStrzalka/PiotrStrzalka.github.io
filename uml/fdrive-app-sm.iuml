@@ -1,6 +1,7 @@
 @startuml
 
 skinparam backgroundColor #FEFFFF
+
 skinparam state {
   StartColor Black
   EndColor Black
@@ -19,24 +20,29 @@ state app_fdrive {
     Drive_NotArmed: Entry:
     Drive_NotArmed: Release Motor
     
+    state choice <<choice>>
     
     state Drive_Armed {
         state Triggered {
-            Jump --> CoolDown : TimeElapsed &&\nmotorAttached == FALSE
-            CoolDown --> Jump : TimeElapsed
+            Jump --> CoolDown : TimeElapsed &&\nmotorAttached == FALSE\n
+            CoolDown --> Jump : TimeElapsed\n&& attempts_left>0
             Jump --> Running : TimeElapsed &&\nmotorAttached == TRUE
             Running --> Jump : motorAttached == FALSE
+            Running --> Running : 10 seconds running \n/ attempts_left = 3U
+            CoolDown -up-> choice : TimeElapsed &&\nattempts_left == 0U/\noverall_errors ++ \n bip 3 times
+            choice -left-> Drive_NotArmed : overall_errors > 3U / \nStore error in memory,
+            choice -up-> Drive_NotArmed : overall_errors <= 3U
+            ' Jump --> Drive_NotArmed : motorAttached == FALSE \n&& attempts_left == 0U /\noverall_errors ++\n if overall_errors > 3U /\n Store error in memory,\n bip 3 times
 
-            Jump --> Attaching_Error : motorAttached == FALSE \n&& attempts_left == 0U
-
-            Attaching_Error : Entry:
-            Attaching_Error : overall_errors ++
+            ' Attaching_Error : Entry:
+            ' Attaching_Error : overall_errors ++
             Jump : Entry:
             Jump : Set Motor Speed = SPEED_GOAL
             Jump:        Set Timer = 500ms
             CoolDown :  Entry:
-            CoolDown :  Release Motor
+            CoolDown :  Break Motor
             CoolDown :  Set Timer = 500ms
+            CoolDown :  attempts_left--
 
         }
         Armed_Idle : Exit:
@@ -48,11 +54,11 @@ state app_fdrive {
     }
 
     Drive_NotArmed --> Armed_Idle : PAS Signal TurnBack / \n overall_errors = 0U,\n bip once
-    Drive_Armed -up-> Drive_NotArmed : PAS Signal TurnBack / bip twice
-    Attaching_Error -up-> Drive_NotArmed : overall_errors > 3U /\n Store error in memory,\n bip 3 times
+    Drive_Armed -up-> Drive_NotArmed : PAS Signal TurnBack /\nbip twice
+    ' Attaching_Error -up-> Drive_NotArmed : overall_errors > 3U /\n Store error in memory,\n bip 3 times
 }
 
-[*] -down-> Drive_NotArmed
+[*] -right-> Drive_NotArmed
 app_adc --> app_fdrive[H]: ADC input < 80mV
 app_fdrive --> app_adc: ADC input > 120mV
 

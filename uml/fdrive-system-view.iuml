@@ -15,11 +15,11 @@ skinparam component {
   ArrowFontName Yu Gothic UI Semibold
 }
 
-    package "removable" as battery_r {
+    package removable1 as "Removable battery" {
         [battery]
     }
 
-    package embedded {
+    package embedded as "Embedded on bike frame" {
         package crank {
             [pas]
         }
@@ -30,16 +30,15 @@ skinparam component {
         }
         package battery_mount {
             [soft_start]
-            [connection_board]
             interface plug_in_connector_female
         }
-        potentiometer --> connection_board : 3 wires
-        pas --> connection_board : 4 wires
-        on_off_switch --> connection_board : 3 wires
-        connection_board --> plug_in_connector_female :  5 wires
+        potentiometer --> plug_in_connector_female : 3 wires
+        pas --> plug_in_connector_female : 4 wires
+        on_off_switch --> plug_in_connector_female : 3 wires
+        ' connection_board --> plug_in_connector_female :  5 wires
     }
     
-    package removable {
+    package removable as "Removable mount" {
         interface plug_in_connector_male
         [vesc]
         [motor]
@@ -52,7 +51,7 @@ skinparam component {
         vesc --> nrf
     } 
     
-    battery --> soft_start : 2 wires
+    battery -left-> soft_start : 2 wires
     soft_start --> plug_in_connector_female : 2 wires
-    plug_in_connector_female --> plug_in_connector_male : 7 wires
+    plug_in_connector_female -left-> plug_in_connector_male : 7 wires
 @enduml
