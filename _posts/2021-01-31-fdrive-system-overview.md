@@ -86,16 +86,46 @@ I have made small table to compare controller candidates.
 | **Generic BLDC<br>controller**    | easy access,<br> low price,<br> cheap, small | Too loud, Too much heat, closed source |   ~15$    |
 | **STM32ESC1**                     | Open sourced,<br> FOC possible,<br> small|  poorly maintained SDK an PC tools |   ~35$    |
 | **SC06**                          | rigid enclosure,<br> nice cooperation with outrunner      |    closed source,<br> lack of proper documentation,<br> big enclosure |   ~30$   |
-| **VESC**                          | Open sourced, big community,<br> good PC tools, great FOC performance      | ready to go with rigid enclosure can be expensive |  ADDRESS TO OTHER POST  ~25$   |
+| **VESC**                          | Open sourced, big community,<br> good PC tools, great FOC performance      | ready to go with rigid enclosure can be expensive |  [~30$](/2020/10/13/vesc-cost-sensitive-solution.html)   |
 
 <span class="picture-missing"> SOME PICTURE MISSING </span>
 ## Motor
+Type of motor is already choosen by way of torque transfer - it needs to be outrunner. At time when project started the most popular were brushless motors, so I picked couple of them to try which suits the best my needs.
+
+After comparision I choosed BLDC motor 5065 270kV without hall sensors (to be precise is more kind of PMSM motor, but commonly they are called brushless or BLDC motors). It is powerfull enough (1,5kW peak or close to this), have good voltage constant (270kV for diameter of 50mm is a sweet spot), is cheap (~30$) and as for now really reliable. It does not have hall sensors so not all controllers are gonna like him.
+
+<span class="picture-missing"> SOME PICTURE MISSING </span>
+
+To make a proper contact with tire I have covered him with piece of radiator hose. I found it in agricultural shop and it turned out to be a perfect fit for the motor. Moreover it reduces vibrations therefore drive is quieter (bike frame resonates pretty well). (I didn't get that idea immediately, I made dozen of tries with skateboard griptapes, sandpaper, inner tubes, but all of them fails after some time)
+
+<span class="picture-missing"> CLOSER LOOK ON OUTER COVER </span>
 
 ## Mount
+That's the most difficult part for me since I never had education on that field, at same time it excited me the most.
+At first I made attempt with steel wheet about 3mm thick, but fulfillment of all mechanical dependencies and position adjustments was too hard. 
+
+At about same time I bought 3D printed and installed Fusion 360 and that was it. Iteration after iteration the design was more clear (in overall more than several dozen were created). The biggest challenge was to enable all position adjustements with plug and play possibility and still to be enough rigid to hadle drive transmission burden. Following pictures should explain how the mechanism works.
+
+<span class="picture-missing"> WIZUALIZACJE I WYDRUK</span>
+
+Currently I am in a way to switch further to aluminium milled parts, but due to problems with access to mill it needs to be postponed.
 
 ## Pedal Assist Sensor
 
+Regular Pedal Assist Sensor give information about one way rotation (by regular I mean this 3-wire ~10$ ones). Some of them are able to provide information about reverse rotation but to a limited extent. Also their fixing requires removing the crank which annoys me badly. So I decided to [create my own version of PAS.](/2020/11/07/vesc-custom-application-pas.html)
+
+## Application (controller firmware)
+
+Working with physicall stuff on software side is very cool. [I have made another post about this application.](/2021/01/24/fdrive-application.html)
+
 # Test fixture
 
+To efficiently work with software and electronic I have decided to create simple test fixture, and that was it. Designing-Writing-Testing loop now was way faster, and the visible progress was motivating.
+
+I took a picture of if, maybe it is not pretty but it is getting the job done.
+
+<span class="picture-missing"> ZDJĘCIE STANOWISKA TESTOWEGO</span>
 
 # Project future
+
+The goal is to create two pieces of fdrive and use it daily and for short trips :)

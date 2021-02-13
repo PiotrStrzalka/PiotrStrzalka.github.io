@@ -1,0 +1,24 @@
+@startuml
+
+[app_fdrive] #GreenYellow
+[mc_interface]
+[app_pas_encoder]
+[commands]
+[conf_general]
+[mcpwn_foc]
+[ch]
+[terminal]
+[chevents]
+
+app_fdrive -right-> app_pas_encoder
+app_fdrive --> mc_interface
+app_fdrive --> commands
+app_fdrive --> conf_general
+app_fdrive --> mcpwn_foc
+app_fdrive --> ch
+app_fdrive --> terminal
+app_fdrive --> chevents
+
+
+
+@enduml
