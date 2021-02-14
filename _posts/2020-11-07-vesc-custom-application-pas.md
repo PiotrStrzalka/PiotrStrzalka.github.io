@@ -6,167 +6,61 @@ tags: [vesc, PROJECT f-drive, electronic]
 # Custom Pedal Assist Sensor (PAS) + VESC support 
 {:.no_toc}
 
--- POST UNDER DEVELOPMENT --  (INITIAL IDEA OF TRACKING HIGH and LOW LEVEL ratio seems to not work to flawlessly. Another approach which involes encored like solution is required.)
-VESC is a really powerfull platform in terms of software comparing to other solutions that you can find on the market. Configuration that you can do through dedicated PC and smartphone apps is quite extensive, but for me the real power lies is capability of writing own application on that platform. I used that power to write custom Pedal Assist Sensor component used in my electric bike drive train project.
+Pedal Assist Sensor (PAS) - is a device that can be mount on the crank of a bicycle which gives you information about the current movement of pedals. (**[On ebikes.ca](https://ebikes.ca/learn/pedal-assist.html)** you can find a broader description of these sensors.
 
-And trust me, as for now there is no better alternative. Once I had decided to make research for a different platform, I have tried to use ST branded Motor Control Workbench with dedicated development boards and after several afternoons I gave up. It was just so annoying to deal with some not fully tested closed source code generator when things happen just randomly.
+Normally sensor have three wires and can track effectively movement, but detection if it is movement in right direction can be a little tricky. Therefore, due to the fact that I have 3D printer and I know a little about electronics I made my own version of PAS.
+
+<span class="picture-missing">PICTURE OF CUSTOM SENSOR</span>
 
 ## Table of Contents
 {:.no_toc}
 * This will become a table of contents (this text will be scrapped).
 {:toc}
-# Pedal Assist Sensor - what is all about
+# Pedal Assist Sensor - market standard
 
-Pedal Assist Sensor (PAS) - is a device that can be mount on the crank of a bicycle which gives you information about the current movement of pedals. (**[HERE](https://ebikes.ca/learn/pedal-assist.html)** you can find a broader description of sensors.
-)
 
 I got a bunch of Varied width sensors which requires one wire to connect to uC. The signal that can be read looks like below:
 
 <!-- ![PAS graph](/assets/uml/pas-signal-graph.png) -->
 <img src="/assets/uml/pas-signal-graph.png" alt="pas-signal-graph"  class="center"/>
 
+Distinction between forward and backward movement can be done based on Tu/Td ratio (ratio between time where signal is on high and low position). Even when I am reading previous sentence I see that measurement is going to be lame. And it really is, I tried to improve it with some filtering, state detection etc. but results didn't satisfys me at all. **[My attempt can be seen on github repo.](https://github.com/strzaleczka/bldc/blob/friction_drive/applications/app_pas_sensor.c)** 
 
-# Ok - but where to put my application "main function"?
-
-This question has been answered in Benjamin Vedder post **[Writing custom application](http://vedder.se/2015/08/vesc-writing-custom-applications/)** . There is a comprehensive description where to put your logic into the code.
-
-# Integration with RTOS and other system functions
-
-**[ChibiOS](https://www.chibios.org/dokuwiki/doku.php?id=chibios:documentation:start)** is really neat Real Time Operating System and working with it is a pleasure thanks to good documentation and wide support community.  
-
-To implement our PAS functionality within ChibiOS and VESC "framework" I took approach as follows:
-
-- #### Transitions **Hi->Low** and **Low->Hi** can be detected by one of the pins using hardware interrupts.
-What is worth to mention is that we need to set internal pull-up for pin that we are going to use for  reading sensor data (or maybe even better to add some 10k pull-up resistor, without it sensor does not work, I catched myself on making that mistake) 
-- #### Example of interrupt configuration
-
- Configuration involves pin definition, setting Line, Mode, Trigger etc. and enabling the interrupt itself
-``` c
-// PAS sensor pin and interrupt definitions
-#define HW_PAS_SENSOR_PORT	        GPIOA
-#define HW_PAS_SENSOR_PIN 	        6   
-#define HW_PAS_SENSOR_PORT_INT	    EXTI_PortSourceGPIOA
-#define HW_PAS_SENSOR_PIN_INT 	    EXTI_PinSource6
-#define HW_PAS_SENSOR_EXTI_CH       EXTI9_5_IRQn
-#define HW_PAS_SENSOR_EXTI_LINE     EXTI_Line6
-#define HW_PAS_SENSOR_EXTI_ISR_VEC  EXTI9_5_IRQHandler
-
-void app_pas_sensor_init(void)
-{
-    ...
-    palSetPadMode(HW_PAS_SENSOR_PORT, HW_PAS_SENSOR_PIN, PAL_MODE_INPUT_PULLUP);
-    
-    SYSCFG_EXTILineConfig(HW_PAS_SENSOR_PORT_INT, HW_PAS_SENSOR_PIN_INT);
-    EXTI_InitTypeDef   EXTI_InitStructure;
-    // Configure EXTI Line
-    EXTI_InitStructure.EXTI_Line = HW_PAS_SENSOR_EXTI_LINE;
-    EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
-    EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising_Falling;
-    EXTI_InitStructure.EXTI_LineCmd = ENABLE;
-    EXTI_Init(&EXTI_InitStructure);
-
-    nvicEnableVector(HW_PAS_SENSOR_EXTI_CH, 2);
-    ...
-}
-
-// PAS sensor input Interrupt Handler
-CH_IRQ_HANDLER(HW_PAS_SENSOR_EXTI_ISR_VEC){
-    ...
-    }
-}
-
-```
-- #### Within this interrupt current **pin state** and **timestamp** is saved and send to task via message queue (here is called mailbox).
-
-Configuration of mailbox system seems tricky at first glance, but after all it is one buffer with two pointer tables, one which shows free spots, and second occupied ones.
-
-``` c
-typedef struct {
-    uint32_t timestamp;
-    uint8_t pin_state;
-} pas_edge;
-
-static pas_edge buffers[NUM_BUFFERS]; 
-static msg_t pas_events_queue[NUM_BUFFERS];
-static mailbox_t pas_events;
-static msg_t pas_events_queue_free[NUM_BUFFERS];
-static mailbox_t pas_events_free;
-
-void app_pas_sensor_init(void)
-{
-    chMBObjectInit(&pas_events, pas_events_queue, NUM_BUFFERS);
-    chMBObjectInit(&pas_events_free, pas_events_queue_free, NUM_BUFFERS);
-
-    for(uint32_t i = 0; i < NUM_BUFFERS; i++){
-        (void) chMBPostI(&pas_events_free, (msg_t)&buffers[i]);
-    }
-    ...
-}
-...
-
-// interrupt handling
-CH_IRQ_HANDLER(HW_PAS_SENSOR_EXTI_ISR_VEC){
-    if(EXTI_GetITStatus(HW_PAS_SENSOR_EXTI_LINE) != RESET){
-        void *pbuf;
-        chSysLockFromISR();
-        uint8_t pinLevel = palReadPad(HW_PAS_SENSOR_PORT, HW_PAS_SENSOR_PIN);
-        EXTI_ClearITPendingBit(HW_PAS_SENSOR_EXTI_LINE);
-        if(chMBFetchI(&pas_events_free, (msg_t *) &pbuf) == MSG_OK){
-            ((pas_edge *) pbuf)->pin_state = pinLevel;
-            ((pas_edge *) pbuf)->timestamp = (uint32_t) chVTGetSystemTimeX();
-            (void)chMBPostI(&pas_events, (msg_t) pbuf);
-        }
-        chSysUnlockFromISR();
-    }
-}
-```
+<span class="picture-missing">PICTURE OF ORIGINAL SENSOR</span>
 
 
+# Pedal Assist Sensor - my own version
 
-- #### Calculation of High/Low state will need some context to do it in (we cannot do it in interrupt, holding interrupt procedure can disturb other more important interrupts and calculations), so another task is required.
+**[My fdrive application](/2021/01/24/fdrive-application.html)** requires to have proper distinction between forward and backward movement and also reliable information about full backward rotation. Knowing that I decided to implement sensing in "encoder like" manner, that means at output I will get two signals (called A and B) crossing themselfs dirrefently according to direction, check following picture for details.
 
+## Mechanical design
 
+What I really don't like about stock sensor is fact that you need to remove crank to mount it on the bike. Avoiding that was the most crucial requirement. Earlier electronic tests when I checked signal quality gave me information that putting 12 magnets around the perimeter gives the best results. Knows all of that I turned on Fusion 360 and after a couple of iterations I got something that is quite useful.
 
-For my purpose I have created a task (here is called **thread**) and reserved space of 2048 Bytes for its working area (in different words **stack**).
-``` c
-...
-static THD_FUNCTION(pas_sensor_thread, arg);
-static THD_WORKING_AREA(pas_sensor_thread_wa, 2048);
+<span class="picture-missing">RENDER I FAKTYCZNY SENSOR</span>
 
-void app_pas_sensor_init(void)
-{
-    ...
-    ...
+## Electronic circuit
 
-    chThdCreateStatic(pas_sensor_thread_wa, sizeof(pas_sensor_thread_wa),
-        NORMALPRIO, pas_sensor_thread, NULL);
-}
+Ealier I though that Hall sensors are simple, just buy a random one connect power supply and it's ready. But I disregarded my oponent, there are many parameters (unipolar, bipolar, latching ...) and sensitivity levels and usage combinations, I was overhelmed for a little. Then I took strategy to buy a bunch of different types, but magnets and do some testing.
+After one evening spent with prototype board, magnets, oscillosope and sensors I got an answer.
 
-static THD_FUNCTION(pas_sensor_thread, arg)
-{
-    ...
-}
-```
+**I will use 2 bipolar hall sensors with 12 magnets mounted with alternating polarity** (the same resolution can be achieved by use of 6 magnets and 2 unipolar sensors, but then sensor failure detection is impossible).
 
-- #### After that I made calculations of signal frequency, Td/Tu ratio, I also made a basic signal interpretation. After that I draw a plot in VESC application but the results were bad, I couldn't distinguish between movement forward and backward when movement was too slow or changed frequently, and the resolution was too bad to detect movement fast enough for my needs.
+Connections can be seen of following diagram. 10k pull-up resistor are mostly for testin purposes (tuning position of sensors), but can stay in place in final circuit also.
 
-So I decided to add one hall sensor to circuit and make this detection to work like encoder.
+<span class="picture-missing">SENSOR DIAGRAM KICAD</span>
 
-# Encoder solution.
+In practice I used an univesal board to make a circuit. 
 
-Suprisingly there are no widely available Pedal Assist Sensors with two hall sensors embedded able to detect precisely movement in both directions. So I decided to simulate it by adding hall sensor from another PAS. Result looks like below, diagram and photo of my test harness.
+<span class="picture-missing">SENSOR BOARD PICTURE</span>
 
-picture
+## Software support
 
-
-Rotation in both directions are show on next picture, it is photo taken on oscilloscope which shows rotation signal and rotation change signal. Overall it looks like typical encoder signal, maybe slopes distances are less regular due to inprecise position of sensors and I think detection in both directions is not fully symmetrical. To get more info about encoders you can check e.g. **[Encoder](https://howtomechatronics.com/tutorials/arduino/rotary-encoder-works-use-arduino/)** 
-
-
-### Encoder support in STM32F4
 Fortunately support for encoder is embedded in STM32F4 timers and even more support is given by VESC system itself, so setting up this whole thing takes only a minute.
 
 I connected "encoder" outputs to pins to STM32 Pins B6 and B7, external pullup is already on board so there is no need for setting up internal pullups.
 My implementation can be found in file **[app_pas_encoder.c](https://github.com/strzaleczka/bldc/blob/friction_drive/applications/app_pas_encoder.c)**
+
 
 Initialization takes only a couple of lines:
 ``` c
@@ -180,28 +74,14 @@ void app_pas_encoder_init(void)
 }
 ```
 
+
 After that value interesting for us can be read from timer CNT register
+
 ``` c
 uint32_t encoder_position = HW_ENC_TIM->CNT;
 ```
 
-That value contains direction detecion, but it doesn't detect counter overload which can disrupt our calculations, it needs to be taken into account when countning position delta. Function **calculate_encoder_delta** takes care about it.
-``` c
-static int calculate_encoder_delta(uint32_t previous_value, uint32_t actual_value)
-{
-    int delta = actual_value - previous_value;
 
-    if(delta < -(ENCODER_RELOAD_VALUE/2))
-    {
-        delta = delta + (int)ENCODER_RELOAD_VALUE;
-    }
-    else if (delta > ENCODER_RELOAD_VALUE/2)
-    {
-        delta = delta - ENCODER_RELOAD_VALUE;
-    }
-    return delta;
-}
-```
 
 Main cyclist pedal movement is determined in function **calculate_action_from_position**. That function is called every 10ms from task and containes state machine to preserve previous state. It also makes some simple averaging and sends signal to listeners (by use of events) about full turn back detection (further it will be used for arming and disarming the controller). I think there is no point to write more about it, small diagram and code in c should explain everything clearly.
 

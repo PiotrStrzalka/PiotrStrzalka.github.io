@@ -81,6 +81,8 @@ I also gave a try to ST motor controller evaluation boards but the SDK was to im
 I have made small table to compare controller candidates.
 
 
+VESC is a really powerfull platform in terms of software comparing to other solutions that you can find on the market. Configuration that you can do through dedicated PC and smartphone apps is quite extensive, but for me the real power lies is capability of writing own application on that platform.
+
 | Controller                        | Prons         | Cons  | Price |
 | -------------                     |:-------------:| :-----:| ------:|
 | **Generic BLDC<br>controller**    | easy access,<br> low price,<br> cheap, small | Too loud, Too much heat, closed source |   ~15$    |
