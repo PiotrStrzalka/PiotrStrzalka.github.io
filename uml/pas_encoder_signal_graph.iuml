@@ -1,0 +1,185 @@
+@startuml
+robust "PAS line A" as PASA
+robust "PAS line B" as PASB
+concise "Pedal movement" as RM
+
+
+@0 
+PASA is Low
+PASB is Low
+RM is Idle
+
+@2
+PASA is High
+PASB is Low
+RM is Forward
+
+@2.5
+PASA is High
+PASB is High
+
+@3
+PASA is Low
+PASB is High
+
+@3.5
+PASA is Low
+PASB is Low
+
+@4
+PASA is High
+PASB is Low
+
+@4.5
+PASA is High
+PASB is High
+
+@5
+PASA is Low
+PASB is High
+
+@5.5
+PASA is Low
+PASB is Low
+
+@6
+PASA is High
+PASB is Low
+
+@6.5
+PASA is High
+PASB is High
+
+@7
+PASA is Low
+PASB is High
+
+@7.5
+PASA is Low
+PASB is Low
+
+@8
+PASA is High
+PASB is Low
+
+@8.5
+PASA is High
+PASB is High
+
+@9
+PASA is Low
+PASB is High
+
+@9.5
+PASA is Low
+PASB is Low
+
+@10
+PASA is Low
+PASB is Low
+
+@10.5
+PASA is Low
+PASB is High
+
+@11
+PASA is High
+PASB is High
+
+@11.5
+PASA is High
+PASB is Low
+
+@12
+PASA is Low
+PASB is Low
+
+@12.5
+PASA is Low
+PASB is High
+
+@11
+PASA is High
+PASB is High
+
+@11.5
+PASA is High
+PASB is Low
+
+@12
+PASA is Low
+PASB is Low
+
+@12.5
+PASA is Low
+PASB is High
+
+@13
+PASA is High
+PASB is High
+
+@13.5
+PASA is High
+PASB is Low
+
+@14
+PASA is Low
+PASB is Low
+
+@14.5
+PASA is Low
+PASB is High
+
+@15
+PASA is High
+PASB is High
+
+@15.5
+PASA is High
+PASB is Low
+
+@16
+PASA is Low
+PASB is Low
+
+@16.5
+PASA is Low
+PASB is High
+
+@17
+PASA is High
+PASB is High
+
+@17.5
+PASA is High
+PASB is Low
+
+@18
+PASA is Low
+PASB is Low
+
+@18.5
+PASA is Low
+PASB is High
+
+@19
+PASA is High
+PASB is High
+
+@19.5
+PASA is High
+PASB is Low
+
+
+@9.95
+RM is Backward
+
+@19.75
+RM is Idle
+
+' @20
+' RM is Idle
+
+highlight 2 to 10 #Gold;line:DimGrey : PAS signal is longer in High state
+highlight 10 to 19.75 #lightBlue;line:DimGrey : PAS signal is longer in Low state
+@enduml

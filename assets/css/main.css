@@ -25,24 +25,6 @@ figcaption {
   text-align: center;
 }
 
-/* Adding 'Contents' headline to the TOC */
-/* #markdown-toc::before {
-    content: "Contents";
-    font-weight: bold;
-} */
-
-
-/* Using numbers instead of bullets for listing */
-/* #markdown-toc ul {
-    list-style: decimal;
-} */
-
-/* #markdown-toc {
-    border: 1px solid #aaa;
-    padding: 1.5em;
-    list-style: decimal;
-    display: inline-block;
-}  */
 
 #markdown-toc {
   background-color: rgb(240, 240, 240);
@@ -50,4 +32,35 @@ figcaption {
 
 .picture-missing {
   color: red;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Create two unequal columns that floats next to each other */
+.column {
+  float: left;
+  padding: 10px;
+  /* height: 300px; Should be removed. Only for demonstration */
+}
+
+.left {
+  width: 80%;
+}
+
+.right {
+  width: 20%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.ul-no-indent {
+  padding: 0;
+  list-style-type: none;
 }

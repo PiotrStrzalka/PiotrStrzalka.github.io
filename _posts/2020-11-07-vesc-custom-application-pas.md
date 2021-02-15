@@ -1,7 +1,7 @@
 ---
 layout: post
 author: "Piotr Strzałka"
-tags: [vesc, PROJECT f-drive, electronic]
+tags: [vesc, PROJECT f-drive, electronic, 3Dprinting]
 ---
 # Custom Pedal Assist Sensor (PAS) + VESC support 
 {:.no_toc}
@@ -21,8 +21,7 @@ Normally sensor have three wires and can track effectively movement, but detecti
 
 I got a bunch of Varied width sensors which requires one wire to connect to uC. The signal that can be read looks like below:
 
-<!-- ![PAS graph](/assets/uml/pas-signal-graph.png) -->
-<img src="/assets/uml/pas-signal-graph.png" alt="pas-signal-graph"  class="center"/>
+{% include image.html url="/assets/uml/pas-signal-graph.png" description="fdrive application placement in VESC structure" class="center"%}
 
 Distinction between forward and backward movement can be done based on Tu/Td ratio (ratio between time where signal is on high and low position). Even when I am reading previous sentence I see that measurement is going to be lame. And it really is, I tried to improve it with some filtering, state detection etc. but results didn't satisfys me at all. **[My attempt can be seen on github repo.](https://github.com/strzaleczka/bldc/blob/friction_drive/applications/app_pas_sensor.c)** 
 
@@ -32,6 +31,9 @@ Distinction between forward and backward movement can be done based on Tu/Td rat
 # Pedal Assist Sensor - my own version
 
 **[My fdrive application](/2021/01/24/fdrive-application.html)** requires to have proper distinction between forward and backward movement and also reliable information about full backward rotation. Knowing that I decided to implement sensing in "encoder like" manner, that means at output I will get two signals (called A and B) crossing themselfs dirrefently according to direction, check following picture for details.
+
+{% include image.html url="/assets/uml/pas_encoder_signal_graph.png" description="fdrive application placement in VESC structure" class="center"%}
+
 
 ## Mechanical design
 
@@ -48,7 +50,7 @@ After one evening spent with prototype board, magnets, oscillosope and sensors I
 
 Connections can be seen of following diagram. 10k pull-up resistor are mostly for testin purposes (tuning position of sensors), but can stay in place in final circuit also.
 
-<span class="picture-missing">SENSOR DIAGRAM KICAD</span>
+{% include image.html url="/assets/images/pas_scheme.jpg" description="PAS senosor circuit diagram" class="center"%}
 
 In practice I used an univesal board to make a circuit. 
 
@@ -56,10 +58,10 @@ In practice I used an univesal board to make a circuit.
 
 ## Software support
 
-Fortunately support for encoder is embedded in STM32F4 timers and even more support is given by VESC system itself, so setting up this whole thing takes only a minute.
+Fortunately support for encoder is embedded in STM32F4 timers and even more support is given by VESC system itself, so setting up this whole thing takes only a minute. I connected "encoder" outputs to STM32 to pins B6 and B7, external pullup is already on board so there is no need for setting up internal pullups.
 
-I connected "encoder" outputs to pins to STM32 Pins B6 and B7, external pullup is already on board so there is no need for setting up internal pullups.
-My implementation can be found in file **[app_pas_encoder.c](https://github.com/strzaleczka/bldc/blob/friction_drive/applications/app_pas_encoder.c)**
+
+My implementation of can be found in file **[app_pas_encoder.c](https://github.com/strzaleczka/bldc/blob/friction_drive/applications/app_pas_encoder.c)**
 
 
 Initialization takes only a couple of lines:
