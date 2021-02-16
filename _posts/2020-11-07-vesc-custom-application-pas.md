@@ -10,7 +10,8 @@ Pedal Assist Sensor (PAS) - is a device that can be mount on the crank of a bicy
 
 Normally sensor have three wires and can track effectively movement, but detection if it is movement in right direction can be a little tricky. Therefore, due to the fact that I have 3D printer and I know a little about electronics I made my own version of PAS.
 
-<span class="picture-missing">PICTURE OF CUSTOM SENSOR</span>
+<!-- <span class="picture-missing">PICTURE OF CUSTOM SENSOR</span> -->
+{% include image.html url="/assets/images/pas.png" description="3d printed version of Pedal Assist Sensor - magnet shield and hall sensor with mount" class="center"%}
 
 ## Table of Contents
 {:.no_toc}
@@ -25,7 +26,9 @@ I got a bunch of Varied width sensors which requires one wire to connect to uC. 
 
 Distinction between forward and backward movement can be done based on Tu/Td ratio (ratio between time where signal is on high and low position). Even when I am reading previous sentence I see that measurement is going to be lame. And it really is, I tried to improve it with some filtering, state detection etc. but results didn't satisfys me at all. **[My attempt can be seen on github repo.](https://github.com/strzaleczka/bldc/blob/friction_drive/applications/app_pas_sensor.c)** 
 
-<span class="picture-missing">PICTURE OF ORIGINAL SENSOR</span>
+<!-- <span class="picture-missing">PICTURE OF ORIGINAL SENSOR</span> -->
+{% include image.html url="/assets/images/pas_market.png" description="Two original sensors mounted on test fixture" class="center"%}
+
 
 
 # Pedal Assist Sensor - my own version
@@ -54,7 +57,8 @@ Connections can be seen of following diagram. 10k pull-up resistor are mostly fo
 
 In practice I used an univesal board to make a circuit. 
 
-<span class="picture-missing">SENSOR BOARD PICTURE</span>
+{% include image.html url="/assets/images/hall.png" description="Two hall sensors mounted on universal board - fast and effective!" class="center"%}
+<!-- <span class="picture-missing">SENSOR BOARD PICTURE</span> -->
 
 ## Software support
 
