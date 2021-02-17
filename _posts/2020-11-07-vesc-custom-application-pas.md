@@ -26,7 +26,6 @@ I got a bunch of Varied width sensors which requires one wire to connect to uC. 
 
 Distinction between forward and backward movement can be done based on Tu/Td ratio (ratio between time where signal is on high and low position). Even when I am reading previous sentence I see that measurement is going to be lame. And it really is, I tried to improve it with some filtering, state detection etc. but results didn't satisfys me at all. **[My attempt can be seen on github repo.](https://github.com/strzaleczka/bldc/blob/friction_drive/applications/app_pas_sensor.c)** 
 
-<!-- <span class="picture-missing">PICTURE OF ORIGINAL SENSOR</span> -->
 {% include image.html url="/assets/images/pas_market.png" description="Two original sensors mounted on test fixture" class="center"%}
 
 
@@ -164,4 +163,11 @@ static void calculate_action_from_position(uint32_t encoder_position){
     previous_encoder_position = encoder_position;
     previous_state = state;
 }
+
+
 ```
+
+
+## PAS in action 
+
+<span class="picture-missing">PICTURE OF ORIGINAL SENSOR</span>

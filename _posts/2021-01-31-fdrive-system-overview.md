@@ -70,7 +70,9 @@ But in practice range is much better due to fact that in Europe cyclist cannot u
 
 Battery got also BMS system to balance charger level of each section. Whole battery is packed to one of universal battery cases.
 
-<span class="picture-missing"> SOME PICTURE MISSING </span>
+
+{% include image.html url="/assets/images/battery.png" description="Battery used in project" class="center" %}
+<!-- <span class="picture-missing"> SOME PICTURE MISSING </span> -->
 
 
 ## Controller
@@ -90,7 +92,7 @@ VESC is a really powerfull platform in terms of software comparing to other solu
 | **SC06**                          | rigid enclosure,<br> nice cooperation with outrunner      |    closed source,<br> lack of proper documentation,<br> big enclosure |   ~30$   |
 | **VESC**                          | Open sourced, big community,<br> good PC tools, great FOC performance      | ready to go with rigid enclosure can be expensive |  [~30$](/2020/10/13/vesc-cost-sensitive-solution.html)   |
 
-<span class="picture-missing"> SOME PICTURE MISSING </span>
+{% include image.html url="/assets/images/controller.png" description="Controller candidates" class="center" %}
 ## Motor
 Type of motor is already choosen by way of torque transfer - it needs to be outrunner. At time when project started the most popular were brushless motors, so I picked couple of them to try which suits the best my needs.
 
@@ -109,6 +111,7 @@ At first I made attempt with steel wheet about 3mm thick, but fulfillment of all
 At about same time I bought 3D printed and installed Fusion 360 and that was it. Iteration after iteration the design was more clear (in overall more than several dozen were created). The biggest challenge was to enable all position adjustements with plug and play possibility and still to be enough rigid to hadle drive transmission burden. Following pictures should explain how the mechanism works.
 
 <span class="picture-missing"> WIZUALIZACJE I WYDRUK</span>
+{% include image.html url="/assets/images/mount.png" description="3d printed mount with motor" class="center" %}
 
 Currently I am in a way to switch further to aluminium milled parts, but due to problems with access to mill it needs to be postponed.
 
@@ -126,7 +129,7 @@ To efficiently work with software and electronic I have decided to create simple
 
 I took a picture of if, maybe it is not pretty but it is getting the job done.
 
-<span class="picture-missing"> ZDJĘCIE STANOWISKA TESTOWEGO</span>
+{% include image.html url="/assets/images/test-fixture.png" description="Test fixture used for in-house testing" class="center" %}
 
 # Project future
 
