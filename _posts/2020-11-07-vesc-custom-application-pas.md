@@ -41,7 +41,7 @@ The distinction between forward and backward movement can be done based on Tu/Td
 
 What I don't like about the stock sensors is fact that you need to remove the crank to mount it on the bike. Avoiding that was the most crucial requirement. Earlier electronic tests when I checked signal quality gave me information that putting 12 magnets around the perimeter gives the best results. Knows all of that I turned on Fusion 360 and after a couple of iterations, I got something that is quite useful.
 
-<span class="picture-missing">RENDER I FAKTYCZNY SENSOR</span>
+{% include image.html url="/assets/images/pas_mount_render.jpg" description="Final model of sensor mounting bracker (left) and magnets shield (right)" class="center"%}
 
 ## Electronic circuit
 
@@ -170,4 +170,4 @@ static void calculate_action_from_position(uint32_t encoder_position){
 
 ## PAS in action 
 
-<span class="picture-missing">PICTURE OF ORIGINAL SENSOR</span>
+<span class="picture-missing">#TODOPICTURE PICTURE OF ORIGINAL ON A BIKE</span>

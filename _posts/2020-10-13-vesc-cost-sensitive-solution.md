@@ -68,8 +68,6 @@ Thanks to the courtesy of Benjamin we can download ready-to-go binaries with whi
 First of all, the bootloader needs to be flashed, a compiled version of it can be downloaded from **[HERE](/assets/other/BLDC_4_Bootloader.hex)**
 The process of programming of STM32 processor is quite easy and can be found i.e **[HERE](https://community.st.com/s/article/Programming-STM32-based-boards-using-ST-Link-utility)**.
 
-PROGRAMMING CONNECTOR OBRAZEK
-
 <br>
 <br>
 
@@ -78,4 +76,4 @@ PROGRAMMING CONNECTOR OBRAZEK
 In that way, we got 3 VESC controllers and a bit of knowledge at a very competitive price. It is not a solution which suits everyone, but I found it the best and hope you are too. 
 If you have any comments about this post or you would like to have something clarified more deeply please write below, or contact me directly.
 
-PICTURE
+<span class="picture-missing">#TODOPICTURE SOLDERED BOARDS</span>
