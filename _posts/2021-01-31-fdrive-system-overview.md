@@ -10,7 +10,7 @@ The idea to create a friction drive system has been born in my head a couple of 
 Then I found a friction drive solution and after some doubts about efficiency, I started to create my version of it. And here we are a couple of years later.. with an almost finished system.
 
 
-{% include image.html url="/assets/images/f-drive-whole.png" description="Fdrive mounting position" class="center" %}
+{% include image.html url="/assets/images/f-drive-whole.jpg" description="Fdrive mounting position" class="center" %}
 <!-- <span class="pict ure-missing"> SOME PICTURE MISSING </span> -->
 
 ## Table of Contents
@@ -24,9 +24,9 @@ The principle of a friction drive relies on pressing down roll to the tire to pa
 
 In this friction drive implementation to connect and hold the motor attached to the tire is used torque produced by the rotor. To make this solution works flawlessly a lot of tries and iterations were required (both in mounting arm design and software adjustments), but I am more than happy with the final result.
 
-{% include image.html url="/assets/images/f-drive-connected.png" description="Motor connected to the tire." class="center"%}
+{% include image.html url="/assets/images/f-drive-connected.jpg" description="Motor connected to the tire." class="center"%}
 
-{% include image.html url="/assets/images/f-drive-disconnected.png" description="Motor disconnected from tire." class="center" %}
+{% include image.html url="/assets/images/f-drive-disconnected.jpg" description="Motor disconnected from tire." class="center" %}
 
 Comparing to traditional e-bike systems disadvantages of fdrive are obvious: less efficient use of energy, faster tire wear, and a problem with wet conditions. But before rejecting the idea advantages also need to be listed: 
 - **little modification in bike**

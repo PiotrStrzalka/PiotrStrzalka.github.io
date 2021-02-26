@@ -15,7 +15,7 @@ exclude:
 - docker
 - uml
 
-title: Let's create some stuff
+title: Engineering is cool
 email: pio.strzalka@gmail.com
 
 tag_page: '/blog/tags'

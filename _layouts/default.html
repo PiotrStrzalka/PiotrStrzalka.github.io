@@ -22,7 +22,14 @@
   </head>
   <body>
     <header class="page-header" role="banner">
-      <a href="/" style="color:white;"><h1 class="project-name">{{ site.title | default: site.title | default: site.github.repository_name }}</h1></a>
+      <div class="headline">
+        <a href="/" style="color:white;"><h1 class="project-name">{{ site.title | default: site.title | default: site.github.repository_name }}</h1></a>
+        <div class="author-name">
+          <p>by Piotr Strzałka</p>
+        </div>
+      </div>
+      
+
       <a href="/about" class={% if page.url == "/about.html" %} "nav-link-big" {% else %} "nav-link" {% endif %}>About me</a>
       <a href="/" class={% if page.url == "/" %} "nav-link-big" {% else %} "nav-link" {% endif %}>Blog</a>
       <a href="/blog/tags" class={% if page.url == "/blog/tags.html" %} "nav-link-big" {% else %} "nav-link" {% endif %}>Tags</a>
