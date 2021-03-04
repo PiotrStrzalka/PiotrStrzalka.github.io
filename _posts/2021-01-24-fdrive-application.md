@@ -1,7 +1,7 @@
 ---
 layout: post
 author: "Piotr Strzałka"
-tags: [vesc, PROJECT f-drive, electronic, software-architecture]
+tags: [vesc, f-drive, electronic, software-architecture, programming]
 ---
 # Fdrive application
 {:.no_toc}

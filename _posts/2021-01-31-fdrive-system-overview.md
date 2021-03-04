@@ -1,7 +1,7 @@
 ---
 layout: post
 author: "Piotr Strzałka"
-tags: [PROJECT f-drive, electronic, 3d-printing]
+tags: [f-drive, electronic, 3d-printing]
 ---
 # F-drive e-bike conversion system
 {:.no_toc}
@@ -72,7 +72,6 @@ The battery got also a BMS system to balance the charger level of each section. 
 
 
 {% include image.html url="/assets/images/battery.png" description="Battery used in project" class="center" %}
-<!-- <span class="picture-missing"> SOME PICTURE MISSING </span> -->
 
 
 ## Controller
@@ -98,11 +97,11 @@ The type of motor is already chosen by way of torque transfer - it needs to be a
 
 After comparison, I chose BLDC motor 5065 270kV without hall sensors (to be precise is more kind of PMSM motor, but commonly they are called brushless or BLDC motors). It is powerful enough (1,5kW peak or close to this), has a good voltage constant (270kV for a diameter of 50mm is a sweet spot), is cheap (~30$) and as for now really reliable. It does not have hall sensors so not all controllers are gonna like him.
 
-<span class="picture-missing"> SOME PICTURE MISSING </span>
+<span class="picture-missing">#ODOPICTURE MOTOR PICTURE</span>
 
 To make proper contact with the tire I have covered him with a piece of radiator hose. I found it in an agricultural shop and it turned out to be a perfect fit for the motor. Moreover, it reduces vibrations therefore drive is quieter (bike frame resonates pretty well). (I didn't get that idea immediately, I made dozen of tries with skateboard grip tapes, sandpaper, inner tubes, but all of them fails after some time)
 
-<span class="picture-missing"> CLOSER LOOK ON OUTER COVER </span>
+<span class="picture-missing">#TODOPICTURE MOTOR OUTER COVER</span>
 
 ## Mount
 That's the most difficult part for me since I never had an education in that field, at the same time it excited me the most.
@@ -110,7 +109,7 @@ At first, I attempted with a steel sheet about 3mm thick, but the fulfillment of
 
 At about the same time I bought 3D printed and installed Fusion 360 and that was it. Iteration after iteration the design was more clear (overall more than several dozen were created). The biggest challenge was to enable all position adjustments with plug-and-play possibility and still to be enough rigid to handle the drive transmission burden. The following pictures should explain how the mechanism works.
 
-<span class="picture-missing"> WIZUALIZACJE I WYDRUK</span>
+<span class="picture-missing">#TODOPICTURE MOUNT RENDER</span>
 {% include image.html url="/assets/images/mount.png" description="3d printed mount with motor" class="center" %}
 
 Currently I am in a way to switch further to aluminum milled parts, but due to problems with access to the milling machine, it needs to be postponed.

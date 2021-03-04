@@ -1,7 +1,7 @@
 ---
 layout: post
 author: "Piotr Strzałka"
-tags: [vesc, PROJECT f-drive, electronic, 3Dprinting]
+tags: [vesc, f-drive, electronic, 3Dprinting, programming]
 ---
 # Custom Pedal Assist Sensor (PAS) + VESC support 
 {:.no_toc}
@@ -10,7 +10,6 @@ Pedal Assist Sensor (PAS) - is a device that can be mount on the crank of a bicy
 
 Normally sensors have three wires and can track effectively the movement of the crank, although detection of the direction of the movement can be a little tricky. Therefore, since I have a 3D printer and I know a little about electronics I made my version of PAS.
 
-<!-- <span class="picture-missing">PICTURE OF CUSTOM SENSOR</span> -->
 {% include image.html url="/assets/images/pas.png" description="3d printed version of Pedal Assist Sensor - magnet shield and hall sensor with mount" class="center"%}
 
 ## Table of Contents
@@ -57,7 +56,6 @@ Connections can be seen in the following diagram. 10k pull-up resistors are most
 In practice, I used a universal board to make a circuit. 
 
 {% include image.html url="/assets/images/hall.png" description="Two hall sensors mounted on universal board - fast and effective!" class="center"%}
-<!-- <span class="picture-missing">SENSOR BOARD PICTURE</span> -->
 
 ## Software support
 
