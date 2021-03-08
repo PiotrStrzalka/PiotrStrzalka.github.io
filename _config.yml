@@ -1,6 +1,6 @@
 theme: jekyll-theme-cayman
 
-repository: strzaleczka/strzaleczka.github.io
+repository: PiotrStrzalka/PiotrStrzalka.github.io
 
 gems:
 - jekyll-github-metadata

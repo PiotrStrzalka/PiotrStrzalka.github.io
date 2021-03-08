@@ -141,7 +141,7 @@ Rotation in both directions are show on next picture, it is photo taken on oscil
 Fortunately support for encoder is embedded in STM32F4 timers and even more support is given by VESC system itself, so setting up this whole thing takes only a minute.
 
 I connected "encoder" outputs to pins to STM32 Pins B6 and B7, external pullup is already on board so there is no need for setting up internal pullups.
-My implementation can be found in file **[app_pas_encoder.c](https://github.com/strzaleczka/bldc/blob/friction_drive/applications/app_pas_encoder.c)**
+My implementation can be found in file **[app_pas_encoder.c](https://github.com/PiotrStrzalka/bldc/blob/friction_drive/applications/app_pas_encoder.c)**
 
 Initialization takes only a couple of lines:
 ``` c

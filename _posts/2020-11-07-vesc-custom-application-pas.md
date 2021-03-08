@@ -23,7 +23,7 @@ I got a bunch of Varied width sensors that requires one wire to connect to uC. T
 
 {% include image.html url="/assets/uml/pas-signal-graph.png" description="Varied with sensor signal timing diagram" class="center"%}
 
-The distinction between forward and backward movement can be done based on Tu/Td ratio (ratio between time where the signal is on high and low level). Even when I am reading the previous sentence I see that measurement is going to be lame. And it is, I tried to improve it with some filtering, state detection, etc. but the results didn't satisfy me at all. **[My attempt can be seen on GitHub repo.](https://github.com/strzaleczka/bldc/blob/friction_drive/applications/app_pas_sensor.c)** 
+The distinction between forward and backward movement can be done based on Tu/Td ratio (ratio between time where the signal is on high and low level). Even when I am reading the previous sentence I see that measurement is going to be lame. And it is, I tried to improve it with some filtering, state detection, etc. but the results didn't satisfy me at all. **[My attempt can be seen on GitHub repo.](https://github.com/PiotrStrzalka/bldc/blob/friction_drive/applications/app_pas_sensor.c)** 
 
 {% include image.html url="/assets/images/pas_market.png" description="Two original sensors mounted on test fixture" class="center"%}
 
@@ -62,7 +62,7 @@ In practice, I used a universal board to make a circuit.
 Fortunately, support for the encoder is embedded in STM32F4 timers and even more support is given by the VESC system itself, so setting up this whole thing takes only a minute. I connected "encoder" outputs to STM32 to pins B6 and B7, external pullup is already on board so there is no need for setting up internal pullups.
 
 
-My implementation of can be found in file **[app_pas_encoder.c](https://github.com/strzaleczka/bldc/blob/friction_drive/applications/app_pas_encoder.c)**
+My implementation of can be found in file **[app_pas_encoder.c](https://github.com/PiotrStrzalka/bldc/blob/friction_drive/applications/app_pas_encoder.c)**
 
 
 Initialization takes only a couple of lines:
